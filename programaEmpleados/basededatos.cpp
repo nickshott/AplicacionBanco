@@ -2,10 +2,10 @@
 
 BaseDeDatos::BaseDeDatos()
 {
-    hostName = "sql10.freemysqlhosting.net";
-    userName = "sql10337251";
-    password = "PBKhFbxTTQ";
-    dataBaseName = "sql10337251";
+    hostName = "db4free.net";
+    userName = "jlukas01";
+    password = "lukas1000579449";
+    dataBaseName = "datos_banco_aed";
 
     db = QSqlDatabase::addDatabase("QMYSQL");
     db.setHostName(hostName);
