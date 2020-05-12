@@ -16,11 +16,11 @@ class BaseDeDatos
 {
 public:
     BaseDeDatos();
-    QVector<QVector<QVector<QString>>> descargarDatos();
-
     void escogerTabla(QString tabla);
     int busquedaLineal(QString usu, QString con);
+    QVector<QString> getDatos();
     QVector<QString> busquedaLineal(QString cedula);
+    bool cambiarUsuarioContra(QVector<QString> datos);
     bool insertarFila(QVector<QString> datos);
     bool modificarFila(QVector<QString> datos);
     bool eliminarFila(int indice);
@@ -32,6 +32,8 @@ private:
     const QVector<QString> cargos{"Asesor comercial", "Gerente de ventas",  "Vendedor"};
     QSqlTableModel *dbModel;
     QSqlDatabase db;
+
+    int indice;
 };
 
 #endif // BASEDEDATOS_H

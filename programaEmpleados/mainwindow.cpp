@@ -16,8 +16,6 @@ MainWindow::MainWindow(QWidget *parent) :
     t->start();
 
     baseBanco = new BaseDeDatos();
-    baseBanco->escogerTabla("registros_empleados");
-    registroEmpleados = baseBanco->descargarDatos();
 }
 
 void MainWindow::actualizarHora(){
@@ -56,6 +54,7 @@ int MainWindow::on_pushButton_clicked()
         ui->lbl_resultadoLogin->setText("");
         hide();
         registroClient = new RegistroClientes(this);
+        registroClient->pasarDatos(baseBanco);
         registroClient->show();
 
         ui->txt_usuario->setText("");

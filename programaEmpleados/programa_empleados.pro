@@ -29,20 +29,23 @@ SOURCES += \
     registroempleados.cpp \
     registroclientes.cpp \
     buscarusuario.cpp \
-    basededatos.cpp
+    basededatos.cpp \
+    cambiardatos.cpp
 
 HEADERS += \
         mainwindow.h \
     registroempleados.h \
     registroclientes.h \
     buscarusuario.h \
-    basededatos.h
+    basededatos.h \
+    cambiardatos.h
 
 FORMS += \
         mainwindow.ui \
     registroempleados.ui \
     registroclientes.ui \
-    buscarusuario.ui
+    buscarusuario.ui \
+    cambiardatos.ui
 
 RESOURCES += \
     iconos.qrc

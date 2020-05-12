@@ -80,3 +80,12 @@ void RegistroClientes::on_btn_cerrar_sesion_clicked()
     close();
     Parent->show();
 }
+
+void RegistroClientes::on_btn_user_clicked()
+{
+    cambiarDatos *cambiarUsu = new cambiarDatos(baseBanco->getDatos(), this);
+    cambiarUsu->pasarDatos(baseBanco);
+    cambiarUsu->setModal(true);
+    cambiarUsu->exec();
+
+}

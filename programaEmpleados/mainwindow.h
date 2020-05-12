@@ -45,9 +45,6 @@ private:
     RegistroClientes *registroClient;
 
     BaseDeDatos *baseBanco;
-
-    QVector<QVector<QVector<QString>>> registroEmpleados;
-
 };
 
 #endif // MAINWINDOW_H

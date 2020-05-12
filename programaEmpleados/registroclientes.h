@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include"buscarusuario.h"
+#include"cambiardatos.h"
 
 namespace Ui {
 class RegistroClientes;
@@ -24,6 +25,8 @@ private slots:
     void on_btn_buscar_clicked();
 
     void on_btn_cerrar_sesion_clicked();
+
+    void on_btn_user_clicked();
 
 private:
     Ui::RegistroClientes *ui;

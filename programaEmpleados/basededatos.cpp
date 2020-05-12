@@ -26,24 +26,6 @@ BaseDeDatos::BaseDeDatos()
 
 }
 
-QVector<QVector<QVector<QString>>> BaseDeDatos::descargarDatos(){
-    QVector<QVector<QVector<QString>>> tmp;
-
-    //tmp[retorna la funcion hash][ingreso al QVector de los daos][recorrer todas las columnas]
-
-    for(int i=0; i<dbModel->rowCount();i++){
-        QString id = dbModel->record(i).value("id").toString();
-        QString nombre = dbModel->record(i).value("Nombre").toString();
-
-        //tmp[numero de la fh][].push_back(id);
-        //tmp[numero de la fh][].push_back(nombre);
-
-    }
-
-
-    return tmp;
-}
-
 
 void BaseDeDatos::escogerTabla(QString tabla){
     dbModel->setTable(tabla);
@@ -59,6 +41,7 @@ int BaseDeDatos::busquedaLineal(QString usu, QString con){
             for(unsigned x=0;x<cargos.size();x++){
                 QString cargoEmple = dbModel->record(i).value("Cargo").toString();
                 if(cargoEmple == cargos[x]){
+                    indice = i;
                     return 1;
                 }
             }
@@ -139,4 +122,33 @@ bool BaseDeDatos::eliminarFila(int indice){
     }
     else
         return false;
+}
+
+QVector<QString> BaseDeDatos::getDatos(){
+    QVector<QString> tmp;
+    tmp.push_back(dbModel->record(indice).value("Nombre").toString());
+    tmp.push_back(dbModel->record(indice).value("Apellido").toString());
+    tmp.push_back(dbModel->record(indice).value("Cargo").toString());
+    tmp.push_back(dbModel->record(indice).value("Usuario").toString());
+    tmp.push_back(dbModel->record(indice).value("Contraseña").toString());
+    tmp.push_back(QString::number(indice));
+
+    return tmp;
+}
+
+bool BaseDeDatos::cambiarUsuarioContra(QVector<QString> datos){
+    QSqlRecord tmpRecord = dbModel->record(datos[2].toInt());
+    tmpRecord.remove(tmpRecord.indexOf("id"));
+
+    tmpRecord.setValue("Usuario", datos[0]);
+    tmpRecord.setValue("Contraseña", datos[1]);
+
+    if(dbModel->setRecord(datos[2].toInt(), tmpRecord)){
+        dbModel->submitAll();
+        return true;
+    }
+    else{
+        db.rollback();
+        return false;
+    }
 }
