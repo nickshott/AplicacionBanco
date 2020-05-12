@@ -6,8 +6,9 @@ RegistroEmpleados::RegistroEmpleados(QWidget *parent) :
     ui(new Ui::RegistroEmpleados)
 {
     Parent = parent;
-
     ui->setupUi(this);
+    ui->txt_cedula->setValidator(new QIntValidator());
+    ui->txt_celular->setValidator(new QIntValidator());
 }
 
 RegistroEmpleados::~RegistroEmpleados()
@@ -111,6 +112,10 @@ void RegistroEmpleados::on_btn_buscar_clicked()
         ui->txt_cedula->setText(datos[3]);
         ui->txt_cargo->setCurrentText(datos[4]);
         ui->txt_email->setText(datos[5]);
+    }
+    else{
+        QMessageBox::critical(this,"Cliente no encontrado", "Lo sentimos, el cliente \n"
+                                                            "no registra en nuestra base de datos");
     }
 
 }

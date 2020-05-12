@@ -26,20 +26,47 @@ BaseDeDatos::BaseDeDatos()
 
 }
 
+QVector<QVector<QVector<QString>>> BaseDeDatos::descargarDatos(){
+    QVector<QVector<QVector<QString>>> tmp;
+
+    //tmp[retorna la funcion hash][ingreso al QVector de los daos][recorrer todas las columnas]
+
+    for(int i=0; i<dbModel->rowCount();i++){
+        QString id = dbModel->record(i).value("id").toString();
+        QString nombre = dbModel->record(i).value("Nombre").toString();
+
+        //tmp[numero de la fh][].push_back(id);
+        //tmp[numero de la fh][].push_back(nombre);
+
+    }
+
+
+    return tmp;
+}
+
+
 void BaseDeDatos::escogerTabla(QString tabla){
     dbModel->setTable(tabla);
     dbModel->select();
 }
 
-bool BaseDeDatos::busquedaLineal(QString usu, QString con){
+int BaseDeDatos::busquedaLineal(QString usu, QString con){
     //METER ENCRIPTACION
     for(int i=0;i<dbModel->rowCount();i++){
         QString usuario = dbModel->record(i).value("Usuario").toString();
         QString clave = dbModel->record(i).value("Contraseña").toString();
-        if(usuario == usu && clave == con)
-            return true;
+        if(usuario == usu && clave == con){
+            for(unsigned x=0;x<cargos.size();x++){
+                QString cargoEmple = dbModel->record(i).value("Cargo").toString();
+                if(cargoEmple == cargos[x]){
+                    return 1;
+                }
+            }
+            return 2;
+        }
+
     }
-    return false;
+    return 0;
 }
 
 QVector<QString> BaseDeDatos::busquedaLineal(QString cedula){

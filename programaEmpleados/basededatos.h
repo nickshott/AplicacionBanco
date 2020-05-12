@@ -16,8 +16,10 @@ class BaseDeDatos
 {
 public:
     BaseDeDatos();
+    QVector<QVector<QVector<QString>>> descargarDatos();
+
     void escogerTabla(QString tabla);
-    bool busquedaLineal(QString usu, QString con);
+    int busquedaLineal(QString usu, QString con);
     QVector<QString> busquedaLineal(QString cedula);
     bool insertarFila(QVector<QString> datos);
     bool modificarFila(QVector<QString> datos);
@@ -27,7 +29,7 @@ private:
     QString userName;
     QString password;
     QString dataBaseName;
-
+    const QVector<QString> cargos{"Asesor comercial", "Gerente de ventas",  "Vendedor"};
     QSqlTableModel *dbModel;
     QSqlDatabase db;
 };

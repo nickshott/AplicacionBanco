@@ -8,7 +8,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
     QTimer *t = new QTimer(this);
 
     t->setInterval(1000);
@@ -17,6 +16,8 @@ MainWindow::MainWindow(QWidget *parent) :
     t->start();
 
     baseBanco = new BaseDeDatos();
+    baseBanco->escogerTabla("registros_empleados");
+    registroEmpleados = baseBanco->descargarDatos();
 }
 
 void MainWindow::actualizarHora(){
@@ -32,7 +33,7 @@ MainWindow::~MainWindow()
 int MainWindow::on_pushButton_clicked()
 {
     baseBanco->escogerTabla("registro_maestro");
-    bool resultadoBusqueda = baseBanco->busquedaLineal(ui->txt_usuario->text(),
+    int resultadoBusqueda = baseBanco->busquedaLineal(ui->txt_usuario->text(),
                                                       ui->txt_contra->text());
     if(resultadoBusqueda){
         ui->lbl_resultadoLogin->setText("");
@@ -51,7 +52,7 @@ int MainWindow::on_pushButton_clicked()
     baseBanco->escogerTabla("registros_empleados");
     resultadoBusqueda = baseBanco->busquedaLineal(ui->txt_usuario->text(),
                                                       ui->txt_contra->text());
-    if(resultadoBusqueda){
+    if(resultadoBusqueda == 1){
         ui->lbl_resultadoLogin->setText("");
         hide();
         registroClient = new RegistroClientes(this);
@@ -62,9 +63,13 @@ int MainWindow::on_pushButton_clicked()
 
         return 1;
     }
-
-    else{
+    else if(resultadoBusqueda == 0){
         ui->lbl_resultadoLogin->setText("<font color='red'>Usuario/contraseña incorrecta</font>");
+        return 0;
+    }
+    else{
+        ui->lbl_resultadoLogin->setText("<font color='red'>Su cargo no tiene permisos\n"
+                                        " para modificar registros de clientes</font>");
         return 0;
     }
 }

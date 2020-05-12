@@ -2,6 +2,7 @@
 #define REGISTROCLIENTES_H
 
 #include <QDialog>
+#include"buscarusuario.h"
 
 namespace Ui {
 class RegistroClientes;
@@ -13,10 +14,22 @@ class RegistroClientes : public QDialog
 
 public:
     explicit RegistroClientes(QWidget *parent = 0);
+    void pasarDatos(BaseDeDatos * &base);
+    void vaciarRegistros();
+    bool datosCompletos();
+    QVector<QString> datosAVector();
     ~RegistroClientes();
+
+private slots:
+    void on_btn_buscar_clicked();
+
+    void on_btn_cerrar_sesion_clicked();
 
 private:
     Ui::RegistroClientes *ui;
+    QWidget *Parent;
+    BaseDeDatos *baseBanco;
+    QVector<QString> datos;
 };
 
 #endif // REGISTROCLIENTES_H

@@ -15,6 +15,8 @@
 
 #include<QSqlRecord>
 
+#include<QList>
+
 #include"registroempleados.h"
 
 #include"registroclientes.h"
@@ -43,6 +45,9 @@ private:
     RegistroClientes *registroClient;
 
     BaseDeDatos *baseBanco;
+
+    QVector<QVector<QVector<QString>>> registroEmpleados;
+
 };
 
 #endif // MAINWINDOW_H
