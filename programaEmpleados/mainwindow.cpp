@@ -53,7 +53,8 @@ int MainWindow::on_pushButton_clicked()
     if(resultadoBusqueda == 1){
         ui->lbl_resultadoLogin->setText("");
         hide();
-        registroClient = new RegistroClientes(this);
+        baseBanco->escogerTabla("registros_clientes");
+        registroClient = new RegistroClientes(baseBanco->getId(),this);
         registroClient->pasarDatos(baseBanco);
         registroClient->show();
 

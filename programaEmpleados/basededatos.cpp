@@ -66,6 +66,9 @@ QVector<QString> BaseDeDatos::busquedaLineal(QString cedula){
             datos.push_back(dbModel->record(i).value("Email").toString());
             datos.push_back(QString::number(i+1));
 
+            datos.push_back(dbModel->record(i).value("Tarjeta debito").toString());
+            datos.push_back(dbModel->record(i).value("Tarjeta credito").toString());
+
             return datos;
         }
     }
@@ -87,11 +90,30 @@ bool BaseDeDatos::insertarFila(QVector<QString> datos){
     tmpRecord.setValue("Usuario",datos[6]);
     tmpRecord.setValue("Contraseña",datos[3]);
 
+    if(datos.size() == 9){
+        if(datos[7].mid(0,4) == "1326"){
+            if(!crearTabla(datos[7])){return false;}
+            tmpRecord.setValue("Tarjeta debito",datos[7]);
+            tmpRecord.setValue("Tarjeta credito","000000000000");
+            tmpRecord.setValue("Monto",datos[8]);
+            tmpRecord.setValue("Cupo","0");
+        }
+        else{
+            if(!crearTabla(datos[7])){return false;}
+            tmpRecord.setValue("Tarjeta debito","000000000000");
+            tmpRecord.setValue("Tarjeta credito",datos[7]);
+
+            tmpRecord.setValue("Monto","0");
+            tmpRecord.setValue("Cupo",datos[8]);
+        }
+    }
+
     if(dbModel->insertRecord(-1, tmpRecord)){
         dbModel->submitAll();
         return true;
     }
     else{
+        qDebug() << "ERROR: " << dbModel->lastError().text();
         db.rollback();
         return false;
     }
@@ -144,6 +166,50 @@ bool BaseDeDatos::cambiarUsuarioContra(QVector<QString> datos){
     tmpRecord.setValue("Contraseña", datos[1]);
 
     if(dbModel->setRecord(datos[2].toInt(), tmpRecord)){
+        dbModel->submitAll();
+        return true;
+    }
+    else{
+        db.rollback();
+        return false;
+    }
+}
+
+int BaseDeDatos::getId(){
+    if(dbModel->rowCount() > 0){
+        int id = dbModel->record(dbModel->rowCount()-1).value("id").toInt();
+
+        return id+1;
+    }
+    else{
+        return 1;
+    }
+}
+
+
+bool BaseDeDatos::crearTabla(QString nombre){
+    QString instruccion = QString("CREATE TABLE `datos_banco_aed`.`%1` ( `id` INT NOT NULL AUTO_INCREMENT , `Producto de origen` VARCHAR(13) NOT NULL , `Producto de destino` VARCHAR(13) NOT NULL , `Valor` VARCHAR(10) NOT NULL , `Fecha` VARCHAR(12) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB").arg(nombre);
+    QSqlQuery q(db);
+
+    if(q.exec(instruccion)){
+        return true;
+    }
+    else{
+        qDebug() << q.lastError();
+        return false;
+    }
+}
+
+bool BaseDeDatos::crearTarjeta(QVector<QString> datos){
+    QSqlRecord tmpRecord = dbModel->record(datos[4].toInt()-1);
+    tmpRecord.remove(tmpRecord.indexOf("id"));
+
+    tmpRecord.setValue(datos[0], datos[1]);
+    tmpRecord.setValue(datos[2], datos[3]);
+
+    if(!crearTabla(datos[1])){return false;}
+
+    if(dbModel->setRecord(datos[4].toInt()-1, tmpRecord)){
         dbModel->submitAll();
         return true;
     }

@@ -100,6 +100,7 @@ void RegistroEmpleados::on_rbtn_eliminar_clicked(bool checked)
 void RegistroEmpleados::on_btn_buscar_clicked()
 {
     BuscarUsuario *buscarUsu = new BuscarUsuario(this);
+    baseBanco->escogerTabla("registros_empleados");
     buscarUsu->pasarDatos(baseBanco);
     buscarUsu->setModal(true);
     buscarUsu->exec();

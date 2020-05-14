@@ -24,7 +24,6 @@ void BuscarUsuario::on_pushButton_2_clicked()
 
 void BuscarUsuario::on_pushButton_clicked()
 {
-    baseBanco->escogerTabla("registros_empleados");
     datos = baseBanco->busquedaLineal(ui->lineEdit->text());
 
     if(datos[0] == "NULL"){

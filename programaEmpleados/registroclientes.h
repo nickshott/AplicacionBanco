@@ -14,8 +14,9 @@ class RegistroClientes : public QDialog
     Q_OBJECT
 
 public:
-    explicit RegistroClientes(QWidget *parent = 0);
+    explicit RegistroClientes(int ultimoNumero, QWidget *parent = 0);
     void pasarDatos(BaseDeDatos * &base);
+    void habilitar(bool habilitar);
     void vaciarRegistros();
     bool datosCompletos();
     QVector<QString> datosAVector();
@@ -27,6 +28,13 @@ private slots:
     void on_btn_cerrar_sesion_clicked();
 
     void on_btn_user_clicked();
+
+
+    void on_rbtn_tarjeta_debito_clicked(bool checked);
+
+    void on_rbtn_tarjeta_credito_clicked(bool checked);
+
+    void on_btn_registtro_clicked();
 
 private:
     Ui::RegistroClientes *ui;
